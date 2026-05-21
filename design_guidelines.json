@@ -1,0 +1,115 @@
+{
+  "theme": "dark",
+  "archetype": "Archetype 4: Swiss & High-Contrast (Tactical Command Variant)",
+  "emotional_tone": "Authoritative, mission-critical, high-stakes, analytical.",
+  "vibe": "NASA Mission Control / Open MCT / Cybersecurity SOC Dashboard",
+  "design_principles": [
+    "Information Density > White Space: Every pixel serves a telemetry or operational purpose.",
+    "Data is Art: The aesthetics emerge from the strict, grid-based arrangement of real-time data.",
+    "Zero Fluff: No decorative gradients, no soft shadows, no playful illustrations.",
+    "Signal over Noise: Use high-contrast alert colors (Red/Amber/Green) against a pure void background."
+  ],
+  "typography": {
+    "font_strategy": "The 'Old Money Tech' variant adapted for Deep Tech. Swiss uniformity for structure, Monospace for truth.",
+    "fonts": {
+      "headings": "Chivo",
+      "body": "IBM Plex Sans",
+      "data_and_telemetry": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-2xl sm:text-3xl tracking-tight font-bold",
+      "h2": "text-xl sm:text-2xl tracking-tight font-semibold",
+      "h3": "text-lg font-medium",
+      "metric_value": "text-3xl sm:text-4xl font-mono tracking-tighter",
+      "body": "text-sm",
+      "labels": "text-xs uppercase tracking-[0.1em] font-mono text-muted-foreground"
+    },
+    "rules": [
+      "ALL numbers, metrics, coordinates, and timestamps MUST use JetBrains Mono.",
+      "Labels and table headers must be uppercase, tiny, with wide letter-spacing.",
+      "Never use Inter or generic default fonts."
+    ]
+  },
+  "colors": {
+    "background": {
+      "void": "#050505",
+      "surface": "#111214",
+      "surface_hover": "#1A1C20"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#8F95A1",
+      "disabled": "#4B505A"
+    },
+    "borders": {
+      "default": "#232733",
+      "active": "#3E4557"
+    },
+    "status": {
+      "critical_red": "#FF3333",
+      "warning_amber": "#FFB800",
+      "safe_green": "#00FF66",
+      "info_blue": "#007AFF"
+    },
+    "rules": [
+      "No full-screen gradients. Color exists only to guide action and indicate system health.",
+      "Borders are technical and visible. The grid must be exposed.",
+      "Use pure #000000 or #050505 for the deep background to create a 'Space/Monitor' feel."
+    ]
+  },
+  "layout_and_spacing": {
+    "strategy": "MODE B: THE 'CONTROL ROOM' GRID",
+    "spacing_scale": "Tight and dense. p-2, p-3, p-4 max inside widgets.",
+    "gap": "gap-1 md:gap-3",
+    "structure": {
+      "app_wrapper": "h-screen w-full flex flex-col overflow-hidden bg-[#050505]",
+      "top_bar": "h-12 border-b border-[#232733] flex items-center justify-between px-4 bg-[#111214]",
+      "main_area": "flex-1 flex overflow-hidden",
+      "sidebar": "w-16 md:w-64 border-r border-[#232733] bg-[#050505] flex-shrink-0",
+      "dashboard_grid": "flex-1 overflow-y-auto p-3 md:p-4 grid grid-cols-1 md:grid-cols-4 xl:grid-cols-12 auto-rows-min"
+    },
+    "surfaces": "GRID BORDERS (The 'Technical' Look). Use sharp edges (rounded-none or rounded-sm). Eliminate soft drop shadows. Use 1px solid borders for definition."
+  },
+  "components": {
+    "strategy": "Shadcn UI base, heavily customized for dark telemetry.",
+    "specific_instructions": {
+      "cards": "border border-[#232733] bg-[#111214] rounded-sm p-4 hover:border-[#3E4557] transition-colors. No shadows.",
+      "buttons": "Square edges, crisp 1px borders. Primary button uses critical_red or info_blue with black text.",
+      "tables": "Dense. text-xs or text-sm. JetBrains Mono for data cells. 1px bottom border on rows.",
+      "inputs": "bg-[#050505] border-[#232733] text-sm focus:border-white focus:ring-0 rounded-sm",
+      "badges": "Square (rounded-none). text-[10px] uppercase font-mono px-2 py-0.5. Colors match status.",
+      "alerts": "Sonner toast system. Dark mode forced. Red border for critical alerts. Must use 'Tracing Beam' or glowing border for active RED alerts."
+    }
+  },
+  "frontend_modules": {
+    "1_top_bar": "Must display API health indicator (pulsing dot), Current System Time (UTC/IST in font-mono), and active alert counts.",
+    "2_sidebar_nav": "Persistent. Icons + Text. Active state highlighted with a 2px left border (e.g., border-l-2 border-white).",
+    "3_live_risk_cards": "Top row of dashboard. Span 3 or 4 cols each. Big typography for counts (RED/YELLOW/GREEN).",
+    "4_live_map": "React Leaflet. MUST use CartoDB Dark Matter tile layer to match theme. Markers must be custom colored dots (pulse animation for RED nodes). Highway segments drawn via GeoJSON or Polyline.",
+    "5_route_planner": "Compact form in a sidebar or widget. Origin/Destination input. Output highlights the safest route on the map in Safe Green.",
+    "6_node_monitoring_table": "Data grid showing Node ID, RSSI, Battery%, Last Updated, Status. Row color tints slightly on hover.",
+    "7_analytics_charts": "Recharts. LineCharts or AreaCharts. Raw data feel. strokeWidth={1.5}. Minimal grid lines (strokeDasharray='3 3' stroke='#232733'). Monospaced tooltips.",
+    "8_alert_system": "Persistent Alert Panel in the right sidebar or bottom sheet. Toasts for immediate RED alerts (landslide detected)."
+  },
+  "animations": {
+    "interactions": "Micro-interactions only. 150ms ease-in-out for hovers.",
+    "telemetry": "Use a subtle pulsing opacity animation for active/live indicators.",
+    "critical": "Use the 'Tracing Beam' effect (animated CSS gradient border) for high-severity threat panels to demand attention without breaking the dark theme."
+  },
+  "testing": {
+    "requirements": "All interactive and key informational elements MUST include a data-testid attribute in kebab-case, role-based (e.g., data-testid='node-status-badge')."
+  },
+  "media": {
+    "instructions": "No standard stock photos. UI is strictly telemetry, maps, and data. If a placeholder is required for a user avatar, use a geometric SVG or initials.",
+    "image_urls": []
+  },
+  "instructions_to_main_agent": [
+    "Build a real-time layout using grid-cols-12 architecture.",
+    "Install and use JetBrains Mono, IBM Plex Sans, and Chivo.",
+    "For the Leaflet map, use url='https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' for the dark theme tile layer.",
+    "Do not use generic Shadcn rounded cards. Override radii to 'rounded-sm' or 'rounded-none'.",
+    "Override all Shadcn shadows to 'none' or use 1px hard borders.",
+    "Implement Recharts with dark mode defaults (axes color #8F95A1, grid #232733).",
+    "Ensure the dashboard feels like a physical SOC/Command Center screen—dense, precise, and high-contrast."
+  ]
+}
