@@ -12,23 +12,23 @@ export default function NodeMonitoring() {
   const [filter, setFilter] = useState('all')
 
   const stats = useMemo(() => {
-    if (!nodes) return { online: 0, degraded: 0, offline: 0, lowBat: 0, weakLink: 0 }
+    const list = Array.isArray(nodes) ? nodes : []
     return {
-      online: nodes.filter((n) => n.health === 'online').length,
-      degraded: nodes.filter((n) => n.health === 'degraded').length,
-      offline: nodes.filter((n) => n.health === 'offline').length,
-      lowBat: nodes.filter((n) => n.battery_pct < 30).length,
-      weakLink: nodes.filter((n) => n.rssi_dbm <= -85).length,
+      online: list.filter((n) => n.health === 'online').length,
+      degraded: list.filter((n) => n.health === 'degraded').length,
+      offline: list.filter((n) => n.health === 'offline').length,
+      lowBat: list.filter((n) => n.battery_pct < 30).length,
+      weakLink: list.filter((n) => n.rssi_dbm <= -85).length,
     }
   }, [nodes])
 
   const filtered = useMemo(() => {
-    if (!nodes) return []
-    if (filter === 'all') return nodes
-    if (filter === 'red') return nodes.filter((n) => n.risk_level === 'red')
-    if (filter === 'offline') return nodes.filter((n) => n.health !== 'online')
-    if (filter === 'lowbat') return nodes.filter((n) => n.battery_pct < 30)
-    return nodes
+    const list = Array.isArray(nodes) ? nodes : []
+    if (filter === 'all') return list
+    if (filter === 'red') return list.filter((n) => n.risk_level === 'red')
+    if (filter === 'offline') return list.filter((n) => n.health !== 'online')
+    if (filter === 'lowbat') return list.filter((n) => n.battery_pct < 30)
+    return list
   }, [nodes, filter])
 
   return (
@@ -48,7 +48,7 @@ export default function NodeMonitoring() {
       <div className="col-span-1 md:col-span-4 xl:col-span-12 surface-panel flex flex-col min-h-[420px]" data-testid="nodes-table-panel">
         <PanelHeader
           title="Sensor Fleet"
-          subtitle={`${filtered.length} of ${nodes?.length || 0} nodes`}
+          subtitle={`${filtered.length} of ${Array.isArray(nodes) ? nodes.length : 0} nodes`}
           right={
             <div className="flex items-center gap-2" data-testid="node-filter">
               {[

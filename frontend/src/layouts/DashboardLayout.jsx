@@ -17,7 +17,7 @@ export function DashboardLayout() {
   const seen = useRef(new Set())
 
   useEffect(() => {
-    if (!alerts) return
+    if (!Array.isArray(alerts)) return
     setAlerts(alerts)
 
     // Toast newly-arrived critical alerts only

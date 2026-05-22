@@ -22,26 +22,27 @@ export default function Dashboard() {
   const { data: nodes } = useLiveData('nodes', getNodes, 8000)
   const { data: segments } = useLiveData('segments', getRiskSegments, 8000)
   const { data: health } = useLiveData('health', getHealth, 10000)
-  const alerts = useAlertStore((s) => s.alerts)
+  const alertsRaw = useAlertStore((s) => s.alerts)
+  const alerts = Array.isArray(alertsRaw) ? alertsRaw : []
 
   const counts = useMemo(() => {
-    if (!nodes) return { red: 0, yellow: 0, green: 0, online: 0, offline: 0, total: 0 }
+    const list = Array.isArray(nodes) ? nodes : []
     return {
-      red: nodes.filter((n) => n.risk_level === 'red').length,
-      yellow: nodes.filter((n) => n.risk_level === 'yellow').length,
-      green: nodes.filter((n) => n.risk_level === 'green').length,
-      online: nodes.filter((n) => n.health === 'online').length,
-      offline: nodes.filter((n) => n.health === 'offline').length,
-      total: nodes.length,
+      red: list.filter((n) => n.risk_level === 'red').length,
+      yellow: list.filter((n) => n.risk_level === 'yellow').length,
+      green: list.filter((n) => n.risk_level === 'green').length,
+      online: list.filter((n) => n.health === 'online').length,
+      offline: list.filter((n) => n.health === 'offline').length,
+      total: list.length,
     }
   }, [nodes])
 
   const segCounts = useMemo(() => {
-    if (!segments) return { red: 0, yellow: 0, green: 0 }
+    const list = Array.isArray(segments) ? segments : []
     return {
-      red: segments.filter((s) => s.risk_level === 'red').length,
-      yellow: segments.filter((s) => s.risk_level === 'yellow').length,
-      green: segments.filter((s) => s.risk_level === 'green').length,
+      red: list.filter((s) => s.risk_level === 'red').length,
+      yellow: list.filter((s) => s.risk_level === 'yellow').length,
+      green: list.filter((s) => s.risk_level === 'green').length,
     }
   }, [segments])
 
@@ -106,7 +107,11 @@ export default function Dashboard() {
       <MetricCard
         testId="metric-uptime"
         label="System Uptime"
-        value={health ? Math.floor(health.uptime_seconds / 60) : '—'}
+        value={
+          Number.isFinite(health?.uptime_seconds)
+            ? Math.floor(health.uptime_seconds / 60)
+            : '—'
+        }
         unit="min"
         icon={Database}
         hint={health?.status?.toUpperCase() || '—'}
@@ -116,7 +121,11 @@ export default function Dashboard() {
       <MetricCard
         testId="metric-ml"
         label="ML Inference"
-        value={health ? Math.round(health.ml_model.inference_latency_ms) : '—'}
+        value={
+          Number.isFinite(health?.ml_model?.inference_latency_ms)
+            ? Math.round(health.ml_model.inference_latency_ms)
+            : '—'
+        }
         unit="ms"
         icon={Cpu}
         hint={health?.ml_model?.name || '—'}

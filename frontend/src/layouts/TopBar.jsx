@@ -16,7 +16,8 @@ const STATUS_TONES = {
 export function TopBar() {
   const now = useSystemClock()
   const { data: health } = useLiveData('health', getHealth, 10000)
-  const alerts = useAlertStore((s) => s.alerts)
+  const alertsRaw = useAlertStore((s) => s.alerts)
+  const alerts = Array.isArray(alertsRaw) ? alertsRaw : []
   const criticalCount = alerts.filter((a) => a.severity === 'critical' && !a.acknowledged).length
 
   const apiStatus = health?.status || 'down'

@@ -1,3 +1,4 @@
-import { apiClient } from './client'
+import { apiClient, ensureArray } from './client'
 
-export const getNodes = () => apiClient.get('/nodes/status').then((r) => r.data)
+export const getNodes = () =>
+  apiClient.get('/nodes/status').then((r) => ensureArray(r.data))

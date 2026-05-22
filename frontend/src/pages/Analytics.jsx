@@ -19,7 +19,9 @@ export default function Analytics() {
   const { data: series } = useLiveData(key, fetcher, 15000)
   const { data: nodes } = useLiveData('nodes', getNodes, 8000)
 
-  const lastValues = series && series.length > 0 ? series[series.length - 1] : null
+  const safeSeries = Array.isArray(series) ? series : []
+  const safeNodes = Array.isArray(nodes) ? nodes : []
+  const lastValues = safeSeries.length > 0 ? safeSeries[safeSeries.length - 1] : null
 
   return (
     <div className="p-3 md:p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-3 auto-rows-min" data-testid="analytics-page">
@@ -39,7 +41,7 @@ export default function Analytics() {
             className="bg-[#050505] border border-[#232733] text-xs font-mono-tac px-2 py-1.5 focus:outline-none focus:border-white"
           >
             <option value="">All nodes (avg)</option>
-            {(nodes || NH715_CORRIDOR).map((n) => (
+            {(safeNodes.length ? safeNodes : NH715_CORRIDOR).map((n) => (
               <option key={n.id} value={n.id}>{n.id}</option>
             ))}
           </select>
@@ -100,7 +102,7 @@ export default function Analytics() {
         <PanelHeader title="Rainfall" subtitle="mm / hour" />
         <div className="p-3">
           <TelemetryChart
-            data={series || []}
+            data={safeSeries}
             yUnit=""
             series={[{ key: 'rainfall_mm', color: '#007AFF', label: 'Rainfall (mm)' }]}
           />
@@ -111,7 +113,7 @@ export default function Analytics() {
         <PanelHeader title="Tilt / Inclination" subtitle="degrees" />
         <div className="p-3">
           <TelemetryChart
-            data={series || []}
+            data={safeSeries}
             yUnit="°"
             series={[{ key: 'tilt_deg', color: '#FFB800', label: 'Tilt (°)' }]}
           />
@@ -122,7 +124,7 @@ export default function Analytics() {
         <PanelHeader title="Soil Moisture" subtitle="percent" />
         <div className="p-3">
           <TelemetryChart
-            data={series || []}
+            data={safeSeries}
             yUnit="%"
             series={[{ key: 'moisture_pct', color: '#00FF66', label: 'Moisture (%)' }]}
           />
@@ -133,7 +135,7 @@ export default function Analytics() {
         <PanelHeader title="Barometric Pressure" subtitle="hPa" />
         <div className="p-3">
           <TelemetryChart
-            data={series || []}
+            data={safeSeries}
             yUnit=""
             series={[{ key: 'pressure_hpa', color: '#FF3333', label: 'Pressure (hPa)' }]}
           />

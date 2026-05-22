@@ -6,7 +6,8 @@ import { MetricCard } from '@/components/common/MetricCard'
 import { AlertOctagon, AlertTriangle, Bell, CheckCircle2 } from 'lucide-react'
 
 export default function Alerts() {
-  const alerts = useAlertStore((s) => s.alerts)
+  const alertsRaw = useAlertStore((s) => s.alerts)
+  const alerts = Array.isArray(alertsRaw) ? alertsRaw : []
   const [filter, setFilter] = useState('all')
 
   const counts = useMemo(() => ({

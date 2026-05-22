@@ -1,7 +1,7 @@
-import { apiClient } from './client'
+import { apiClient, ensureArray } from './client'
 
 export const getRiskSegments = () =>
-  apiClient.get('/risk/segment').then((r) => r.data)
+  apiClient.get('/risk/segment').then((r) => ensureArray(r.data))
 
 export const getSafestRoute = (origin, destination) =>
   apiClient

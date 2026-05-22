@@ -36,8 +36,13 @@ function MapBootstrap() {
  * @param {Array} routePath    — optional safest-route path (highlighted)
  * @param {Function} onNodeClick
  */
-export function HighwayMap({ nodes = [], segments = [], routePath = null, onNodeClick }) {
-  const fallback = nodes.length > 0 ? nodes : NH715_CORRIDOR
+export function HighwayMap({ nodes, segments, routePath = null, onNodeClick }) {
+  // Hard guards — the polling layer can briefly hand us null or a non-array
+  // (e.g. an unexpected backend payload). Never trust callers blindly.
+  const safeNodes = Array.isArray(nodes) ? nodes : []
+  const safeSegments = Array.isArray(segments) ? segments : []
+  const safeRoute = Array.isArray(routePath) ? routePath : null
+  const fallback = safeNodes.length > 0 ? safeNodes : NH715_CORRIDOR
 
   return (
     <div className="relative w-full h-full" data-testid="highway-map">
@@ -61,7 +66,7 @@ export function HighwayMap({ nodes = [], segments = [], routePath = null, onNode
         />
 
         {/* Live risk segments */}
-        {segments.map((s) => (
+        {safeSegments.map((s) => (
           <Polyline
             key={s.segment_id}
             positions={[[s.from_lat, s.from_lng], [s.to_lat, s.to_lng]]}

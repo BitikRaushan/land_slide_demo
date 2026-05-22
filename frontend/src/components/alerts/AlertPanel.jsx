@@ -13,10 +13,11 @@ const SEVERITY = {
  * AlertPanel — scrollable alert feed.
  * Critical (RED) alerts get a tracing-beam border to demand attention.
  */
-export function AlertPanel({ alerts = [], compact = false, onItemClick }) {
+export function AlertPanel({ alerts, compact = false, onItemClick }) {
   const acknowledge = useAlertStore((s) => s.acknowledge)
+  const list = Array.isArray(alerts) ? alerts : []
 
-  if (!alerts.length) {
+  if (!list.length) {
     return (
       <div
         className="surface-panel p-6 flex flex-col items-center justify-center gap-2 h-full"
@@ -31,7 +32,7 @@ export function AlertPanel({ alerts = [], compact = false, onItemClick }) {
 
   return (
     <div className="flex flex-col gap-2 overflow-y-auto h-full pr-1" data-testid="alert-panel">
-      {alerts.map((a) => {
+      {list.map((a) => {
         const sev = SEVERITY[a.severity] || SEVERITY.info
         const Icon = sev.icon
         const isCritical = a.severity === 'critical' && !a.acknowledged

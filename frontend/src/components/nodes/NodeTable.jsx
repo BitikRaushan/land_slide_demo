@@ -11,7 +11,8 @@ const batteryTone = (pct) => (pct < 20 ? '#FF3333' : pct < 40 ? '#FFB800' : '#00
 /**
  * NodeTable — dense data grid showing all sensor nodes.
  */
-export function NodeTable({ nodes = [], onSelect }) {
+export function NodeTable({ nodes, onSelect }) {
+  const list = Array.isArray(nodes) ? nodes : []
   return (
     <div className="overflow-auto h-full" data-testid="node-table">
       <table className="w-full text-xs font-mono-tac">
@@ -31,7 +32,7 @@ export function NodeTable({ nodes = [], onSelect }) {
           </tr>
         </thead>
         <tbody>
-          {nodes.map((n) => {
+          {list.map((n) => {
             const Bi = batteryIcon(n.battery_pct)
             const Si = rssiIcon(n.rssi_dbm)
             const h = healthTone(n.health)

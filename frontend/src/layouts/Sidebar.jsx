@@ -20,7 +20,8 @@ const items = [
 ]
 
 export function Sidebar() {
-  const alerts = useAlertStore((s) => s.alerts)
+  const alertsRaw = useAlertStore((s) => s.alerts)
+  const alerts = Array.isArray(alertsRaw) ? alertsRaw : []
   const unack = alerts.filter((a) => !a.acknowledged).length
 
   return (

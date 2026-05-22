@@ -1,3 +1,4 @@
-import { apiClient } from './client'
+import { apiClient, ensureArray } from './client'
 
-export const getAlerts = () => apiClient.get('/alerts').then((r) => r.data)
+export const getAlerts = () =>
+  apiClient.get('/alerts').then((r) => ensureArray(r.data))
